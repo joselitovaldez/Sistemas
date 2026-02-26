@@ -16,6 +16,7 @@ if (!$conn) {
 try {
     $reclamacion_id = isset($_POST['id']) ? intval($_POST['id']) : null;
     $area_destino = isset($_POST['area_destino']) ? trim($_POST['area_destino']) : null;
+    $usuario_asignado = isset($_POST['usuario_asignado']) ? intval($_POST['usuario_asignado']) : null;
 
     if (!$reclamacion_id || !$area_destino) {
         throw new Exception('Datos incompletos. ID: ' . $reclamacion_id . ', Área: ' . $area_destino);
@@ -33,22 +34,19 @@ try {
     }
     $checkStmt->close();
     
-    // Actualizar la reclamación
-    $sql = "UPDATE reclamaciones SET area = ?, estado = 'En revisión' WHERE id = ?";
+    // Actualizar la reclamación con área y usuario asignado
+    $sql = "UPDATE reclamaciones SET area = ?, estado = 'En revisión', asignado_a = ?, fecha_asignacion = NOW() WHERE id = ?";
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
         throw new Exception('Error en la preparación: ' . $conn->error);
     }
     
-    $stmt->bind_param("si", $area_destino, $reclamacion_id);
+    $stmt->bind_param("sii", $area_destino, $usuario_asignado, $reclamacion_id);
     
     if (!$stmt->execute()) {
         throw new Exception('Error en la ejecución: ' . $stmt->error);
     }
-    
-    // affected_rows puede ser 0 si el área es la misma, pero eso es OK
-    // Lo importante es que la reclamación existe y el UPDATE se ejecutó sin error
     
     $stmt->close();
     

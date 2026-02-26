@@ -1051,7 +1051,8 @@ function derivarReclamoModal(id) {
                 <div style="margin-bottom: 1.5rem; padding: 1.2rem; background: #f8f9fa; border-radius: 6px;">
                     <label style="font-weight: 600; color: #667eea; font-size: 0.9rem;">Resumen del Reclamo</label>
                     <p style="margin: 0.5rem 0 0 0; color: #2c3e50; font-size: 1rem;"><strong>Folio:</strong> ${r.folio || 'N/A'}</p>
-                    <p style="margin: 0.3rem 0 0 0; color: #2c3e50; font-size: 0.95rem;"><strong>Tipo:</strong> ${r.tipo || 'N/A'}</p>
+                    <p style="margin: 0.3rem 0 0 0; color: #2c3e50; font-size: 0.95rem;"><strong>Tipo de Bien:</strong> ${r.tipo_bien || 'N/A'}</p>
+                    <p style="margin: 0.3rem 0 0 0; color: #2c3e50; font-size: 0.95rem;"><strong>Tipo de Reclamo:</strong> ${r.tipo_registro || 'N/A'}</p>
                     <p style="margin: 0.3rem 0 0 0; color: #2c3e50; font-size: 0.95rem;"><strong>Estado Actual:</strong> <span style="background: #667eea; color: white; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">${r.estado}</span></p>
                 </div>
                 
@@ -1073,9 +1074,14 @@ function derivarReclamoModal(id) {
                 
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">Área</label>
-                    <select id="selectArea" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
+                    <select id="selectArea" onchange="cargarUsuariosArea()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem;">
                         <option value="">-- Selecciona un área --</option>
                     </select>
+                </div>
+
+                <div id="usuariosContainer" style="margin-bottom: 1.5rem; display: none;">
+                    <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">Usuario Asignado</label>
+                    <div id="usuariosInfo" style="padding: 1rem; background: #e8f4f8; border-radius: 6px; border-left: 4px solid #667eea;"></div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -1105,6 +1111,7 @@ function derivarReclamoModal(id) {
 function cargarAreas(departamentoId) {
     if (!departamentoId) {
         document.getElementById('selectArea').innerHTML = '<option value="">-- Selecciona un área --</option>';
+        document.getElementById('usuariosContainer').style.display = 'none';
         return;
     }
     
@@ -1130,11 +1137,70 @@ function cargarAreas(departamentoId) {
             opciones += '<option value="">No hay áreas disponibles</option>';
         }
         document.getElementById('selectArea').innerHTML = opciones;
+        document.getElementById('usuariosContainer').style.display = 'none';
     })
     .catch(error => {
         console.error('Error al cargar áreas:', error);
         document.getElementById('selectArea').innerHTML = '<option value="">Error al cargar áreas</option>';
         mostrarAlerta('Error: ' + error.message, 'error');
+    });
+}
+
+function cargarUsuariosArea() {
+    const departamento = document.getElementById('selectDepartamento').value;
+    const area = document.getElementById('selectArea').value;
+    
+    if (!departamento || !area) {
+        document.getElementById('usuariosContainer').style.display = 'none';
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('departamento', departamento);
+    formData.append('area', area);
+    
+    fetch('ajax_get_usuario_area.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al cargar usuarios');
+        return response.json();
+    })
+    .then(data => {
+        console.log('Usuarios cargados:', data);
+        const usuariosContainer = document.getElementById('usuariosContainer');
+        const usuariosInfo = document.getElementById('usuariosInfo');
+        
+        if (data.success && data.usuarios && data.usuarios.length > 0) {
+            let html = '';
+            data.usuarios.forEach(usuario => {
+                const nombreCompleto = usuario.nombre + ' ' + (usuario.apellido_paterno || '') + ' ' + (usuario.apellido_materno || '');
+                html += `
+                    <div style="margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #d0dfe8;">
+                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">${nombreCompleto}</p>
+                        <p style="margin: 0.3rem 0 0 0; color: #666; font-size: 0.9rem;">📧 ${usuario.email || 'N/A'}</p>
+                        <p style="margin: 0.2rem 0 0 0; color: #666; font-size: 0.9rem;">📱 ${usuario.telefono || 'N/A'}</p>
+                    </div>
+                `;
+            });
+            usuariosInfo.innerHTML = html;
+            usuariosContainer.style.display = 'block';
+            
+            // Guardar el usuario asignado (el primero de la lista)
+            document.getElementById('modalDerivarReclamo').dataset.usuarioAsignado = data.usuarios[0].id;
+            document.getElementById('modalDerivarReclamo').dataset.usuarioNombre = data.usuarios[0].nombre + ' ' + (data.usuarios[0].apellido_paterno || '');
+        } else {
+            usuariosInfo.innerHTML = '<p style="color: #e74c3c; margin: 0;">No hay usuarios asignados a esta área</p>';
+            usuariosContainer.style.display = 'block';
+            document.getElementById('modalDerivarReclamo').dataset.usuarioAsignado = '';
+            document.getElementById('modalDerivarReclamo').dataset.usuarioNombre = '';
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar usuarios:', error);
+        document.getElementById('usuariosInfo').innerHTML = '<p style="color: #e74c3c; margin: 0;">Error al cargar usuarios</p>';
+        document.getElementById('usuariosContainer').style.display = 'block';
     });
 }
 
@@ -1145,6 +1211,7 @@ function cerrarModalDerivar() {
 function guardarDerivacion() {
     const id = document.getElementById('modalDerivarReclamo').dataset.reclamoId;
     const areId = document.getElementById('selectArea').value;
+    const usuarioAsignado = document.getElementById('modalDerivarReclamo').dataset.usuarioAsignado;
     
     if (!areId) {
         mostrarAlerta('Debes seleccionar un área', 'error');
@@ -1154,6 +1221,7 @@ function guardarDerivacion() {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('area_destino', areId);
+    formData.append('usuario_asignado', usuarioAsignado);
     
     fetch('ajax_derivar_reclamo.php', {
         method: 'POST',
@@ -1162,7 +1230,7 @@ function guardarDerivacion() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            mostrarAlerta('Reclamo derivado correctamente', 'success');
+            mostrarAlerta('Reclamo derivado correctamente a ' + (document.getElementById('modalDerivarReclamo').dataset.usuarioNombre || 'el usuario asignado'), 'success');
             cerrarModalDerivar();
             cerrarModalDetalle();
             window.location.reload();
