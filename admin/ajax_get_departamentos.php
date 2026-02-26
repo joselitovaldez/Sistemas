@@ -1,12 +1,15 @@
 <?php
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 session_start();
 
 require_once '../config/database.php';
 
 try {
-    // Consultar departamentos
-    $query = "SELECT DISTINCT departamento as id, departamento as nombre FROM reclamaciones WHERE departamento IS NOT NULL AND departamento != '' ORDER BY departamento ASC";
+    // Consultar departamentos únicos de la tabla departamentos_areas
+    $query = "SELECT DISTINCT departamento as id, departamento as nombre 
+              FROM departamentos_areas 
+              WHERE activo = 1 
+              ORDER BY departamento ASC";
     
     $result = $conn->query($query);
     

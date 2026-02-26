@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 session_start();
 
 require_once '../config/database.php';
@@ -12,8 +12,8 @@ try {
         throw new Exception('Departamento no especificado');
     }
     
-    // Consultar áreas del departamento
-    $query = "SELECT DISTINCT area as id, area as nombre FROM reclamaciones WHERE departamento = ? AND area IS NOT NULL AND area != '' ORDER BY area ASC";
+    // Consultar áreas del departamento de la tabla departamentos_areas
+    $query = "SELECT DISTINCT area as id, area as nombre FROM departamentos_areas WHERE departamento = ? AND activo = 1 ORDER BY area ASC";
     
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
