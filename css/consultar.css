@@ -1,0 +1,219 @@
+/* Consultar Reclamación - Estilos específicos */
+.search-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #0e3d4f 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+}
+
+.search-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-form-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.search-form-container p {
+    text-align: center;
+    opacity: 0.95;
+    margin-bottom: 2rem;
+}
+
+.search-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-input-group input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.search-input-group button {
+    padding: 1rem 2rem;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.search-input-group button:hover {
+    background: #d68910;
+    transform: translateY(-2px);
+}
+
+.result-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.result-sidebar {
+    background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    height: fit-content;
+}
+
+.result-status {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.status-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0rem 0rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    width: fit-content;
+    line-height: 1;
+}
+
+.status-badge.pendiente {
+    background: #c0c0c0;
+    color: #333333;
+}
+
+.status-badge.revision {
+    background: #ffbf00;
+    color: #4a2f00;
+}
+
+.status-badge.resuelto {
+    background: #28a745;
+    color: #ffffff;
+}
+
+.status-badge.noprocede {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+.folio-display {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1rem;
+    border: 2px dashed var(--primary);
+}
+
+.folio-display p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.folio-display .folio {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .result-container {
+        grid-template-columns: 1fr;
+    }
+
+    .search-hero {
+        padding: 2rem 0;
+    }
+}
+
+.detail-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 2px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.detail-card h3 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--secondary);
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.detail-value {
+    color: #666;
+    text-align: right;
+}
+
+.response-box {
+    background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+    border-left: 4px solid var(--success);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.response-box h4 {
+    color: var(--success);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.response-box p {
+    color: #155724;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.pending-box {
+    background: linear-gradient(135deg, #fff3cd 0%, #fffacd 100%);
+    border-left: 4px solid var(--warning);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.pending-box p {
+    color: #856404;
+    margin: 0;
+}

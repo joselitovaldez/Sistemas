@@ -1,0 +1,48 @@
+/* Confirmación - Estilos específicos */
+.confirmation {
+    text-align: left;
+}
+
+.confirmation h2,
+.confirmation .folio,
+.confirmation > p,
+.confirmation .alert {
+    text-align: center;
+}
+
+.summary-section {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.summary-item {
+    background: #f9fafb;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 0.75rem;
+    min-width: 0;
+}
+
+.summary-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.35rem;
+}
+
+.summary-value {
+    font-weight: 600;
+    color: var(--dark);
+    word-break: break-word;
+}
+
+@media (max-width: 720px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}

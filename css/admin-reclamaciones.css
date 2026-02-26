@@ -1,0 +1,95 @@
+/* Admin - Reclamaciones */
+
+/* Tabla compacta */
+.card table {
+    font-size: 12px;
+    width: 100%;
+}
+
+.card table td,
+.card table th {
+    padding: 0.6rem 0.4rem;
+    white-space: nowrap;
+}
+
+.card table .badge {
+    font-size: 10px;
+    padding: 0rem 0rem;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* Botones de acción */
+.btn-action-group {
+    display: flex;
+    gap: 0.3rem;
+    justify-content: center;
+}
+
+.btn-action-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-action-sm i {
+    font-size: 10px;
+}
+
+.btn-view {
+    background: var(--info);
+    color: white;
+}
+
+.btn-view:hover {
+    background: #2980b9;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+    text-decoration: none;
+}
+
+.btn-view:active {
+    background: #21618c;
+    transform: scale(0.98);
+}
+
+.btn-edit {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #d68910;
+    box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
+    text-decoration: none;
+}
+
+.btn-edit:active {
+    background: #ca7b05;
+    transform: scale(0.98);
+}
+
+/* Ajustes para celdas específicas */
+.card table td:first-child {
+    font-weight: bold;
+}
+
+.card table td:nth-child(3) {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card table td:nth-child(4) {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

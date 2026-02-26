@@ -1,0 +1,197 @@
+/* Admin - Usuarios */
+
+/* Password input mejorado */
+.password-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 3rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    letter-spacing: normal;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.password-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(26, 95, 122, 0.1);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: none;
+    border: none;
+    border-left: 1px solid #ddd;
+    cursor: pointer;
+    color: #666;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    user-select: none;
+    border-radius: 0 4px 4px 0;
+}
+
+.password-toggle i {
+    font-size: 14px;
+}
+
+.password-toggle:hover {
+    background: #f5f5f5;
+    color: var(--primary);
+}
+
+.password-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Indicador de fuerza de contraseña */
+.password-strength {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    display: none;
+}
+
+.password-strength.show {
+    display: block;
+}
+
+.strength-bar {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-bar-fill.weak {
+    width: 33%;
+    background: #dc3545;
+}
+
+.strength-bar-fill.medium {
+    width: 66%;
+    background: #ffc107;
+}
+
+.strength-bar-fill.strong {
+    width: 100%;
+    background: #28a745;
+}
+
+.strength-text {
+    font-weight: 600;
+}
+
+.strength-text.weak {
+    color: #dc3545;
+}
+
+.strength-text.medium {
+    color: #ffc107;
+}
+
+.strength-text.strong {
+    color: #28a745;
+}
+
+/* Hint de requisitos */
+.password-hint {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+}
+
+.password-hint.error {
+    color: #dc3545;
+}
+
+/* Botones de acción en tabla */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-action i {
+    font-size: 11px;
+}
+
+.btn-action.btn-toggle {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-action.btn-toggle:hover {
+    background: #155269;
+    box-shadow: 0 4px 8px rgba(26, 95, 122, 0.3);
+    text-decoration: none;
+}
+
+.btn-action.btn-toggle:active {
+    background: #0e3d4f;
+    box-shadow: 0 2px 4px rgba(26, 95, 122, 0.4);
+    transform: scale(0.98);
+}
+
+.btn-action.btn-toggle.inactive {
+    background: var(--success);
+}
+
+.btn-action.btn-toggle.inactive:hover {
+    background: #1e8449;
+    text-decoration: none;
+}
+
+.btn-action.btn-toggle.inactive:active {
+    background: #186a3b;
+    transform: scale(0.98);
+}
+
+/* Estilos para tabla de usuarios */
+table {
+    font-size: 13px;
+}
+
+table td,
+table th {
+    padding: 0.75rem 0.5rem;
+    white-space: nowrap;
+}
+
+table .badge {
+    font-size: 11px;
+    padding: 0.5rem;
+    line-height: 1;
+}
