@@ -2,6 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 require_once '../config/database.php';
+require_once '../includes/notificaciones.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Método no permitido']);
@@ -50,7 +51,29 @@ try {
     
     $stmt->close();
     
-    echo json_encode(['success' => true, 'message' => 'Reclamación derivada correctamente']);
+    // Obtener nombre del usuario asignado
+    $sqlUsuario = "SELECT CONCAT(nombre, ' ', IFNULL(apellido_paterno, ''), ' ', IFNULL(apellido_materno, '')) as nombre_completo FROM usuarios WHERE id = ?";
+    $stmtUsuario = $conn->prepare($sqlUsuario);
+    $stmtUsuario->bind_param("i", $usuario_asignado);
+    $stmtUsuario->execute();
+    $resultUsuario = $stmtUsuario->get_result();
+    $usuarioData = $resultUsuario->fetch_assoc();
+    $stmtUsuario->close();
+    
+    $nombreUsuario = $usuarioData['nombre_completo'] ?? 'Usuario Asignado';
+    
+    // Enviar notificaciones por email
+    $emailAsignado = enviarNotificacionAsignacion($conn, $reclamacion_id, $usuario_asignado);
+    $emailReclamante = enviarNotificacionReclamante($conn, $reclamacion_id, $nombreUsuario);
+    
+    echo json_encode([
+        'success' => true, 
+        'message' => 'Reclamación derivada correctamente',
+        'emails_enviados' => [
+            'usuario_asignado' => $emailAsignado,
+            'reclamante' => $emailReclamante
+        ]
+    ]);
 
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
