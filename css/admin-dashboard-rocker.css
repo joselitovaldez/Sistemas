@@ -1689,6 +1689,10 @@ body.dark-mode {
     color: #e9ecef;
 }
 
+body.dark-mode .main-content {
+    background: #1a1d29;
+}
+
 body.dark-mode .top-header {
     background: #242730;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1696,6 +1700,36 @@ body.dark-mode .top-header {
 
 body.dark-mode .page-title {
     color: #e9ecef;
+}
+
+body.dark-mode .sidebar {
+    background: #1a1d29;
+}
+
+body.dark-mode .sidebar-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .sidebar-header h2 {
+    color: #e9ecef;
+}
+
+body.dark-mode .sidebar-header p {
+    color: #adb5bd;
+}
+
+body.dark-mode .nav-link {
+    color: #adb5bd;
+}
+
+body.dark-mode .nav-item:hover .nav-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+body.dark-mode .nav-item.active .nav-link {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
 }
 
 body.dark-mode .sidebar-toggle {
@@ -1793,6 +1827,23 @@ body.dark-mode .reclamaciones-table td {
 
 body.dark-mode .reclamaciones-table tbody tr:hover {
     background: #2c2f3a;
+}
+
+body.dark-mode .dashboard-footer {
+    background: #242730;
+    border-top-color: #363947;
+}
+
+body.dark-mode .dashboard-footer p {
+    color: #adb5bd;
+}
+
+body.dark-mode .btn {
+    border-color: #363947;
+}
+
+body.dark-mode .badge {
+    border-color: transparent;
 }
 
 /* User Menu Dropdown */

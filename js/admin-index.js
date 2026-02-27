@@ -1607,8 +1607,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Save preference
+            // Save preference and sync with theme customizer
             localStorage.setItem('darkMode', isDark);
+            
+            // Update theme customizer radio button
+            const themeStyle = isDark ? 'dark' : 'light';
+            const styleRadio = document.querySelector(`input[name="theme-style"][value="${themeStyle}"]`);
+            if (styleRadio) styleRadio.checked = true;
+            
+            // Save to theme
+            saveTheme({ style: themeStyle });
         });
     }
     
@@ -1726,20 +1734,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply theme style (light, dark, semi-dark)
     function applyThemeStyle(style) {
         document.body.classList.remove('dark-mode', 'semi-dark-mode');
+        const sidebar = document.querySelector('.sidebar');
+        const header = document.querySelector('.top-header');
+        
+        // Get current theme to check for custom colors
+        const currentTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
         
         if (style === 'dark') {
             document.body.classList.add('dark-mode');
+            
+            // Apply dark colors only if using defaults
+            if (!currentTheme.sidebarColor || currentTheme.sidebarColor === defaultTheme.sidebarColor) {
+                if (sidebar) {
+                    sidebar.style.setProperty('background', '#1a1d29', 'important');
+                }
+            }
+            
+            if (!currentTheme.headerColor || currentTheme.headerColor === defaultTheme.headerColor) {
+                if (header) {
+                    header.style.setProperty('background', '#242730', 'important');
+                    header.style.color = '#e9ecef';
+                    const pageTitle = header.querySelector('.page-title');
+                    const sidebarToggle = header.querySelector('.sidebar-toggle');
+                    if (pageTitle) pageTitle.style.color = '#e9ecef';
+                    if (sidebarToggle) sidebarToggle.style.color = '#e9ecef';
+                }
+            }
+            
             if (darkModeIcon) {
                 darkModeIcon.classList.remove('fa-moon');
                 darkModeIcon.classList.add('fa-sun');
             }
         } else if (style === 'semi-dark') {
             document.body.classList.add('semi-dark-mode');
+            
+            // Semi-dark: sidebar dark, content light
+            if (!currentTheme.sidebarColor || currentTheme.sidebarColor === defaultTheme.sidebarColor) {
+                if (sidebar) {
+                    sidebar.style.setProperty('background', '#1a1d29', 'important');
+                }
+            }
+            
             if (darkModeIcon) {
                 darkModeIcon.classList.remove('fa-sun');
                 darkModeIcon.classList.add('fa-moon');
             }
         } else {
+            // Light mode - restore defaults if no custom colors
+            if (!currentTheme.sidebarColor || currentTheme.sidebarColor === defaultTheme.sidebarColor) {
+                if (sidebar) {
+                    sidebar.style.setProperty('background', defaultTheme.sidebarColor, 'important');
+                }
+            }
+            
+            if (!currentTheme.headerColor || currentTheme.headerColor === defaultTheme.headerColor) {
+                if (header) {
+                    header.style.setProperty('background', '#ffffff', 'important');
+                    header.style.color = '#212529';
+                    const pageTitle = header.querySelector('.page-title');
+                    const sidebarToggle = header.querySelector('.sidebar-toggle');
+                    if (pageTitle) pageTitle.style.color = '#212529';
+                    if (sidebarToggle) sidebarToggle.style.color = '#212529';
+                }
+            }
+            
             if (darkModeIcon) {
                 darkModeIcon.classList.remove('fa-sun');
                 darkModeIcon.classList.add('fa-moon');
@@ -1753,7 +1811,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyHeaderColor(color) {
         const header = document.querySelector('.top-header');
         if (header) {
-            header.style.background = color;
+            // Use setProperty with priority to override dark mode styles
+            header.style.setProperty('background', color, 'important');
             
             // Adjust text color based on background brightness
             const isDark = isColorDark(color);
@@ -1774,7 +1833,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function applySidebarColor(color) {
         const sidebar = document.querySelector('.sidebar');
         if (sidebar) {
-            sidebar.style.background = color;
+            // Use setProperty with priority to override dark mode styles
+            sidebar.style.setProperty('background', color, 'important');
         }
         
         saveTheme({ sidebarColor: color });
