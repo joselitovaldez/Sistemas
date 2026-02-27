@@ -1400,6 +1400,89 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
     </footer>
 </div>
 
+<!-- Theme Customizer -->
+<div class="theme-customizer" id="themeCustomizer">
+    <div class="customizer-header">
+        <h3>PERSONALIZADOR</h3>
+        <button class="customizer-close" id="customizerClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="customizer-body">
+        <!-- Theme Styles -->
+        <div class="customizer-section">
+            <h4 class="customizer-title">Estilos de Tema</h4>
+            <div class="theme-options">
+                <label class="theme-option">
+                    <input type="radio" name="theme-style" value="light" checked>
+                    <span class="theme-label">
+                        <i class="fas fa-sun"></i>
+                        Light
+                    </span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="theme-style" value="dark">
+                    <span class="theme-label">
+                        <i class="fas fa-moon"></i>
+                        Dark
+                    </span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="theme-style" value="semi-dark">
+                    <span class="theme-label">
+                        <i class="fas fa-adjust"></i>
+                        Semi Dark
+                    </span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Header Colors -->
+        <div class="customizer-section">
+            <h4 class="customizer-title">Colores del Header</h4>
+            <div class="color-palette">
+                <button class="color-option" data-header-color="#0d6efd" style="background: #0d6efd;" title="Azul"></button>
+                <button class="color-option" data-header-color="#2c3e50" style="background: #2c3e50;" title="Oscuro"></button>
+                <button class="color-option" data-header-color="#dc3545" style="background: #dc3545;" title="Rojo"></button>
+                <button class="color-option" data-header-color="#198754" style="background: #198754;" title="Verde"></button>
+                <button class="color-option" data-header-color="#6f42c1" style="background: #6f42c1;" title="Morado"></button>
+                <button class="color-option" data-header-color="#5d4037" style="background: #5d4037;" title="Café"></button>
+                <button class="color-option" data-header-color="#d81b60" style="background: #d81b60;" title="Rosa"></button>
+                <button class="color-option" data-header-color="#ff6f00" style="background: #ff6f00;" title="Naranja"></button>
+            </div>
+        </div>
+        
+        <!-- Sidebar Colors -->
+        <div class="customizer-section">
+            <h4 class="customizer-title">Colores del Sidebar</h4>
+            <div class="color-palette">
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" title="Morado Gradiente"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #10506e 0%, #0f6c91 100%)" style="background: linear-gradient(135deg, #10506e 0%, #0f6c91 100%);" title="Azul Gradiente"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #134e4a 0%, #047857 100%)" style="background: linear-gradient(135deg, #134e4a 0%, #047857 100%);" title="Verde Gradiente"></button>
+                <button class="color-option" data-sidebar-color="#1a1d29" style="background: #1a1d29;" title="Oscuro"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #7b2cbf 0%, #c77dff 100%)" style="background: linear-gradient(135deg, #7b2cbf 0%, #c77dff 100%);" title="Morado"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #8b4513 0%, #d2691e 100%)" style="background: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);" title="Café"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #d35400 0%, #e67e22 100%)" style="background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);" title="Naranja"></button>
+                <button class="color-option" data-sidebar-color="linear-gradient(135deg, #1e293b 0%, #334155 100%)" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);" title="Gris Oscuro"></button>
+            </div>
+        </div>
+        
+        <!-- Reset Button -->
+        <div class="customizer-section">
+            <button class="btn-reset-theme" id="resetTheme">
+                <i class="fas fa-undo"></i>
+                Restaurar Valores Por Defecto
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Theme Customizer Toggle Button -->
+<button class="theme-customizer-toggle" id="customizerToggle" title="Personalizar Tema">
+    <i class="fas fa-cog"></i>
+</button>
+
 <script type="application/json" id="datos-por-mes-data"><?php echo json_encode($datos_por_mes); ?></script>
 <script type="application/json" id="estados-data"><?php echo json_encode($estados_result); ?></script>
 <script src="../js/admin-index.js"></script>

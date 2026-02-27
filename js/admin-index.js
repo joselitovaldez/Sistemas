@@ -1680,5 +1680,216 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    // ==================== THEME CUSTOMIZER ====================
+    
+    const themeCustomizer = document.getElementById('themeCustomizer');
+    const customizerToggle = document.getElementById('customizerToggle');
+    const customizerClose = document.getElementById('customizerClose');
+    const resetThemeBtn = document.getElementById('resetTheme');
+    
+    // Default theme settings
+    const defaultTheme = {
+        style: 'light',
+        headerColor: '#ffffff',
+        sidebarColor: 'linear-gradient(135deg, #10506e 0%, #0f6c91 100%)'
+    };
+    
+    // Load saved theme or use defaults
+    function loadTheme() {
+        const savedTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
+        
+        // Apply theme style
+        applyThemeStyle(savedTheme.style);
+        
+        // Apply header color
+        if (savedTheme.headerColor) {
+            applyHeaderColor(savedTheme.headerColor);
+        }
+        
+        // Apply sidebar color
+        if (savedTheme.sidebarColor) {
+            applySidebarColor(savedTheme.sidebarColor);
+        }
+        
+        // Update UI selections
+        const styleRadio = document.querySelector(`input[name="theme-style"][value="${savedTheme.style}"]`);
+        if (styleRadio) styleRadio.checked = true;
+    }
+    
+    // Save theme to localStorage
+    function saveTheme(theme) {
+        const currentTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
+        const updatedTheme = { ...currentTheme, ...theme };
+        localStorage.setItem('dashboardTheme', JSON.stringify(updatedTheme));
+    }
+    
+    // Apply theme style (light, dark, semi-dark)
+    function applyThemeStyle(style) {
+        document.body.classList.remove('dark-mode', 'semi-dark-mode');
+        
+        if (style === 'dark') {
+            document.body.classList.add('dark-mode');
+            if (darkModeIcon) {
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            }
+        } else if (style === 'semi-dark') {
+            document.body.classList.add('semi-dark-mode');
+            if (darkModeIcon) {
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            }
+        } else {
+            if (darkModeIcon) {
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            }
+        }
+        
+        localStorage.setItem('darkMode', style === 'dark');
+    }
+    
+    // Apply header color
+    function applyHeaderColor(color) {
+        const header = document.querySelector('.top-header');
+        if (header) {
+            header.style.background = color;
+            
+            // Adjust text color based on background brightness
+            const isDark = isColorDark(color);
+            header.style.color = isDark ? '#ffffff' : '#212529';
+            
+            // Update child elements colors
+            const pageTitle = header.querySelector('.page-title');
+            const sidebarToggle = header.querySelector('.sidebar-toggle');
+            
+            if (pageTitle) pageTitle.style.color = isDark ? '#ffffff' : '#212529';
+            if (sidebarToggle) sidebarToggle.style.color = isDark ? '#ffffff' : '#212529';
+        }
+        
+        saveTheme({ headerColor: color });
+    }
+    
+    // Apply sidebar color
+    function applySidebarColor(color) {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.style.background = color;
+        }
+        
+        saveTheme({ sidebarColor: color });
+    }
+    
+    // Check if color is dark (simple brightness calculation)
+    function isColorDark(color) {
+        // For gradients, default to light text
+        if (color.includes('gradient') || color.includes('linear')) {
+            return true;
+        }
+        
+        // For hex colors
+        if (color.startsWith('#')) {
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness < 128;
+        }
+        
+        return false;
+    }
+    
+    // Toggle customizer panel
+    if (customizerToggle) {
+        customizerToggle.addEventListener('click', () => {
+            themeCustomizer.classList.add('show');
+        });
+    }
+    
+    if (customizerClose) {
+        customizerClose.addEventListener('click', () => {
+            themeCustomizer.classList.remove('show');
+        });
+    }
+    
+    // Close customizer when clicking outside
+    document.addEventListener('click', (e) => {
+        if (themeCustomizer && 
+            !themeCustomizer.contains(e.target) && 
+            !customizerToggle.contains(e.target) &&
+            themeCustomizer.classList.contains('show')) {
+            themeCustomizer.classList.remove('show');
+        }
+    });
+    
+    // Theme style selection
+    document.querySelectorAll('input[name=\"theme-style\"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const style = e.target.value;
+            applyThemeStyle(style);
+            saveTheme({ style: style });
+        });
+    });
+    
+    // Header color selection
+    document.querySelectorAll('[data-header-color]').forEach(button => {
+        button.addEventListener('click', () => {
+            const color = button.getAttribute('data-header-color');
+            applyHeaderColor(color);
+            
+            // Update active state
+            document.querySelectorAll('[data-header-color]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        });
+    });
+    
+    // Sidebar color selection
+    document.querySelectorAll('[data-sidebar-color]').forEach(button => {
+        button.addEventListener('click', () => {
+            const color = button.getAttribute('data-sidebar-color');
+            applySidebarColor(color);
+            
+            // Update active state
+            document.querySelectorAll('[data-sidebar-color]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        });
+    });
+    
+    // Reset theme to defaults
+    if (resetThemeBtn) {
+        resetThemeBtn.addEventListener('click', () => {
+            if (confirm('\u00bfEst\u00e1s seguro de que quieres restaurar los valores por defecto del tema?')) {
+                // Clear localStorage
+                localStorage.removeItem('dashboardTheme');
+                localStorage.removeItem('darkMode');
+                
+                // Reset to defaults
+                applyThemeStyle(defaultTheme.style);
+                applyHeaderColor(defaultTheme.headerColor);
+                applySidebarColor(defaultTheme.sidebarColor);
+                
+                // Update UI
+                const styleRadio = document.querySelector('input[name=\"theme-style\"][value=\"light\"]');
+                if (styleRadio) styleRadio.checked = true;
+                
+                // Remove active states
+                document.querySelectorAll('.color-option').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Show confirmation
+                alert('Tema restaurado a valores por defecto');
+            }
+        });
+    }
+    
+    // Load theme on page load
+    loadTheme();
+    
     // El modal solo se cierra con los botones de cerrar o cancelar
 });
