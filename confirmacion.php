@@ -26,6 +26,7 @@ $institucion = array(
     <title>Confirmación - Libro de Reclamaciones UPeU</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/confirmacion.css">
+    <link rel="stylesheet" href="css/confirmacion-inline.css">
 </head>
 <body>
 
@@ -47,19 +48,19 @@ $institucion = array(
     <div class="card confirmation">
         <h2>✓ Confirmación de Registro</h2>
         
-        <p style="margin: 1.5rem 0; font-size: 1.1rem;">Tu folio de atención:</p>
-        <div class="folio" onclick="copiarTexto('<?php echo $folio; ?>')" style="cursor: pointer; padding: 1rem; background: white; border-radius: 4px; margin: 1rem 0; border: 2px dashed var(--primary);">
+        <p class="confirmation-folio-label">Tu folio de atención:</p>
+        <div class="folio confirmation-folio-box" data-action="copy-folio" data-folio="<?php echo $folio; ?>">
             <?php echo $folio; ?> (Click para copiar)
         </div>
         
-        <p style="margin: 1.5rem 0;">Por favor, <strong>guarda tu folio</strong> para poder consultar el estado de tu reclamación.</p>
+        <p class="confirmation-hint">Por favor, <strong>guarda tu folio</strong> para poder consultar el estado de tu reclamación.</p>
         
-        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+        <hr class="confirmation-divider">
         
-        <h3 style="color: var(--primary); margin-bottom: 1rem;">Resumen de tu Reclamación</h3>
+        <h3 class="confirmation-section-title">Resumen de tu Reclamación</h3>
         
         <div class="summary-section">
-            <h4 style="color: var(--primary); margin: 0 0 0.75rem;">Datos Personales</h4>
+            <h4 class="confirmation-subtitle">Datos Personales</h4>
             <div class="summary-grid">
                 <div class="summary-item">
                     <div class="summary-label">Nombres</div>
@@ -77,7 +78,7 @@ $institucion = array(
         </div>
 
         <div class="summary-section">
-            <h4 style="color: var(--primary); margin: 0 0 0.75rem;">Campus / Área</h4>
+            <h4 class="confirmation-subtitle">Campus / Área</h4>
             <div class="summary-grid">
                 <div class="summary-item">
                     <div class="summary-label">Campus</div>
@@ -111,14 +112,14 @@ $institucion = array(
             </div>
         </div>
         
-        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+        <hr class="confirmation-divider">
         
-        <div style="background: #fef5e7; padding: 1rem; border-left: 4px solid var(--secondary); border-radius: 4px; margin: 1rem 0;">
+        <div class="confirmation-tip">
             <p><strong>⚠️ Importante:</strong> Recibirás una respuesta en tu email dentro de <strong>30 días hábiles</strong> conforme a lo establecido en el Código de Protección y Defensa del Consumidor.</p>
         </div>
         
-        <div style="margin-top: 2rem;">
-            <a href="consultar_reclamacion.php" class="btn btn-primary" style="display: inline-block; margin-right: 1rem;">Consultar Estado</a>
+        <div class="confirmation-actions">
+            <a href="consultar_reclamacion.php" class="btn btn-primary btn-inline">Consultar Estado</a>
             <a href="index.php" class="btn btn-secondary">Nueva Reclamación</a>
         </div>
     </div>
@@ -130,6 +131,7 @@ $institucion = array(
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/confirmacion.js"></script>
 
 </body>
 </html>

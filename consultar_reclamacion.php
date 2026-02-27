@@ -25,19 +25,20 @@ $institucion = array(
     <title>Consultar Reclamación - UPeU</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/consultar.css">
+    <link rel="stylesheet" href="css/consultar-inline.css">
 </head>
 <body>
 
 <header>
     <div class="header-content">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="header-row">
             <div>
                 <h1>📋 Consultar Reclamación</h1>
                 <p>Verifica el estado de tu reclamo en tiempo real</p>
             </div>
-            <div style="text-align: right;">
-                <a href="index.php" style="color: white; text-decoration: none; margin-right: 1rem;">📝 Nueva</a>
-                <a href="mi_perfil.php" style="color: white; text-decoration: none;">👤 Mi Perfil</a>
+            <div class="header-actions">
+                <a href="index.php" class="header-link header-link-spaced">📝 Nueva</a>
+                <a href="mi_perfil.php" class="header-link">👤 Mi Perfil</a>
             </div>
         </div>
     </div>
@@ -50,7 +51,7 @@ $institucion = array(
             <p>Ingresa el folio que recibiste para ver el estado de tu reclamación</p>
             
             <?php if ($error): ?>
-                <div class="alert alert-danger" style="margin-bottom: 1.5rem;">✗ <?php echo $error; ?></div>
+                <div class="alert alert-danger alert-spaced">✗ <?php echo $error; ?></div>
             <?php endif; ?>
             
             <form method="POST">
@@ -61,7 +62,7 @@ $institucion = array(
                 </div>
             </form>
             
-            <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">
+            <p class="search-hint">
                 💡 Usa el folio que te dimos cuando registraste tu reclamación
             </p>
         </div>
@@ -86,7 +87,7 @@ $institucion = array(
                         }
                     ?>
                 </div>
-                <p style="margin: 0.5rem 0 0; color: #666; font-size: 0.9rem;">ESTADO ACTUAL</p>
+                <p class="status-label">ESTADO ACTUAL</p>
                 <span class="status-badge <?php 
                     if ($estado === 'Resuelto') echo 'resuelto';
                     elseif ($estado === 'En revisión') echo 'revision';
@@ -99,26 +100,26 @@ $institucion = array(
 
             <div class="folio-display">
                 <p>FOLIO DE ATENCIÓN</p>
-                <div class="folio" onclick="copiarTexto('<?php echo $reclamacion['folio']; ?>')" style="cursor: pointer;">
+                <div class="folio folio-clickable" data-action="copy-folio" data-folio="<?php echo $reclamacion['folio']; ?>">
                     <?php echo $reclamacion['folio']; ?>
                 </div>
-                <p style="margin-top: 0.5rem; font-size: 0.75rem;">Click para copiar</p>
+                <p class="copy-hint">Click para copiar</p>
             </div>
 
-            <div style="background: white; padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
-                <p style="margin: 0; color: #666;">📅 Registrado</p>
-                <p style="margin: 0.5rem 0 0; font-weight: bold; color: var(--primary);">
+            <div class="result-info-box">
+                <p class="result-info-label">📅 Registrado</p>
+                <p class="result-info-date">
                     <?php echo date('d/m/Y', strtotime($reclamacion['fecha_registro'])); ?>
                 </p>
-                <p style="margin: 0.5rem 0 0; color: #999; font-size: 0.85rem;">
+                <p class="result-info-time">
                     a las <?php echo str_replace(['AM', 'PM'], ['.a.m.', '.p.m.'], date('h:i A', strtotime($reclamacion['fecha_registro']))); ?>
                 </p>
             </div>
 
-            <button class="btn btn-primary btn-block" style="margin-top: 1rem;" onclick="location.reload()">
+            <button class="btn btn-primary btn-block btn-spaced" type="button" data-action="reload-page">
                 🔄 Actualizar
             </button>
-            <button class="btn btn-secondary btn-block" style="margin-top: 0.5rem;" onclick="location.href='consultar_reclamacion.php'">
+            <button class="btn btn-secondary btn-block btn-spaced-sm" type="button" data-action="new-search">
                 🔍 Nueva Búsqueda
             </button>
         </div>
@@ -165,9 +166,9 @@ $institucion = array(
                     <span class="detail-label">Tipo</span>
                     <span class="detail-value"><?php echo $reclamacion['tipo_bien']; ?></span>
                 </div>
-                <div style="padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0;">
-                    <p style="margin: 0; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Descripción</p>
-                    <p style="margin: 0; color: #666;"><?php echo nl2br($reclamacion['descripcion_asunto']); ?></p>
+                <div class="detail-block detail-block-divider">
+                    <p class="detail-block-title">Descripción</p>
+                    <p class="detail-block-text"><?php echo nl2br($reclamacion['descripcion_asunto']); ?></p>
                 </div>
             </div>
 
@@ -178,14 +179,14 @@ $institucion = array(
                     <span class="detail-label">Tipo</span>
                     <span class="detail-value"><?php echo $reclamacion['tipo_registro']; ?></span>
                 </div>
-                <div style="padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0;">
-                    <p style="margin: 0; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Detalle</p>
-                    <p style="margin: 0; color: #666;"><?php echo nl2br($reclamacion['detalle_reclamacion']); ?></p>
+                <div class="detail-block detail-block-divider">
+                    <p class="detail-block-title">Detalle</p>
+                    <p class="detail-block-text"><?php echo nl2br($reclamacion['detalle_reclamacion']); ?></p>
                 </div>
                 <?php if ($reclamacion['pedido']): ?>
-                <div style="padding: 0.75rem 0;">
-                    <p style="margin: 0; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Pedido</p>
-                    <p style="margin: 0; color: #666;"><?php echo nl2br($reclamacion['pedido']); ?></p>
+                <div class="detail-block">
+                    <p class="detail-block-title">Pedido</p>
+                    <p class="detail-block-text"><?php echo nl2br($reclamacion['pedido']); ?></p>
                 </div>
                 <?php endif; ?>
             </div>
@@ -205,7 +206,7 @@ $institucion = array(
                 <div class="response-box">
                     <h4>✓ Respuesta Recibida</h4>
                     <p><?php echo nl2br($reclamacion['respuesta']); ?></p>
-                    <p style="margin-top: 1rem; font-size: 0.85rem; color: #155724;">
+                    <p class="response-date">
                         Respondida el <?php echo date('d \d\e F \d\e Y', strtotime($reclamacion['fecha_respuesta'])); ?>
                     </p>
                 </div>
@@ -225,7 +226,7 @@ $institucion = array(
 <footer>
     <p>Copyright © UPeU 2026. Todos los derechos son reservados — 
     <a href="https://www.upeu.edu.pe/">Universidad Peruana Unión</a></p>
-    <p style="margin-top: 1rem; font-size: 0.9rem;">
+    <p class="footer-links">
         <a href="index.php">Nueva Reclamación</a> | 
         <a href="mi_perfil.php">Mi Perfil</a> | 
         <a href="admin/login.php">Acceso Administrativo</a>
@@ -233,6 +234,7 @@ $institucion = array(
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/consultar.js"></script>
 
 </body>
 </html>

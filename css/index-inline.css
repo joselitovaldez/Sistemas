@@ -1,0 +1,23 @@
+/* Index (estilos extraidos de inline) */
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.institucion-line {
+    margin: 0;
+}
+
+.institucion-line-spaced {
+    margin-top: 0.25rem;
+}
+
+.required-danger {
+    color: var(--danger);
+}
+
+.footer-links {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}

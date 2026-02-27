@@ -42,11 +42,13 @@ function subirArchivo($file) {
         return array('error' => 'Extensión de archivo no permitida');
     }
     
+    $nombre_original = basename($file['name']);
+    $nombre_original = str_replace(array("/", "\\"), '', $nombre_original);
     $nombre_archivo = time() . '_' . uniqid() . '.' . $ext;
     $ruta_completa = $directorio . $nombre_archivo;
     
     if (move_uploaded_file($file['tmp_name'], $ruta_completa)) {
-        return array('success' => true, 'archivo' => $nombre_archivo);
+        return array('success' => true, 'archivo' => $nombre_archivo, 'nombre_original' => $nombre_original);
     } else {
         return array('error' => 'Error al subir el archivo');
     }
@@ -64,12 +66,12 @@ function guardarReclamacion($datos) {
             apellido_paterno, apellido_materno, dni_ce, email, 
             telefono, domicilio, padre_madre, tipo_bien, 
             descripcion_asunto, tipo_registro, detalle_reclamacion, 
-            pedido, archivo_adjunto
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            pedido, archivo_adjunto, archivo_adjunto_nombre
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
     
     $stmt->bind_param(
-        "ssssssssssssssssss",
+        "sssssssssssssssssss",
         $folio,
         $datos['campus'],
         $datos['departamento'],
@@ -87,7 +89,8 @@ function guardarReclamacion($datos) {
         $datos['tipo_registro'],
         $datos['detalle_reclamacion'],
         $datos['pedido'],
-        $datos['archivo_adjunto']
+        $datos['archivo_adjunto'],
+        $datos['archivo_adjunto_nombre']
     );
     
     if ($stmt->execute()) {

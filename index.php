@@ -20,6 +20,7 @@ $institucion = array(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Font changed to Arial -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index-inline.css">
     <link rel="stylesheet" href="css/admin-dashboard-rocker.css">
     <style>
         /* Font changed to Arial */
@@ -377,11 +378,11 @@ $institucion = array(
                 <i class="fas fa-book-open"></i>
             </div>
             <h1><?php echo $institucion['razon_social']; ?></h1>
-            <p style="font-size: 1.1rem; font-weight: 600;">Libro de Reclamaciones Virtual</p>
+            <p class="hero-subtitle">Libro de Reclamaciones Virtual</p>
             
             <div class="ruc-info">
-                <p style="margin: 0;"><strong>RUC:</strong> <?php echo $institucion['ruc']; ?></p>
-                <p style="margin: 0.25rem 0 0 0;"><strong>Domicilio:</strong> <?php echo $institucion['domicilio']; ?></p>
+                <p class="institucion-line"><strong>RUC:</strong> <?php echo $institucion['ruc']; ?></p>
+                <p class="institucion-line institucion-line-spaced"><strong>Domicilio:</strong> <?php echo $institucion['domicilio']; ?></p>
             </div>
 
             <div class="nav-links">
@@ -405,7 +406,7 @@ $institucion = array(
 
             <div class="alert alert-info">
                 <i class="fas fa-info-circle"></i>
-                <span>Por favor completa todos los campos marcados con <span class="required" style="color: var(--danger);">*</span> para registrar tu reclamación correctamente.</span>
+                <span>Por favor completa todos los campos marcados con <span class="required required-danger">*</span> para registrar tu reclamación correctamente.</span>
             </div>
             
             <form id="formReclamacion" method="POST" action="procesar_reclamacion.php" enctype="multipart/form-data">
@@ -610,7 +611,7 @@ $institucion = array(
                         <label for="archivo">
                             <i class="fas fa-paperclip"></i> Adjuntar Archivo (opcional)
                         </label>
-                        <input type="file" id="archivo" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="validarArchivo(this)">
+                        <input type="file" id="archivo" name="archivo" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
                         <small class="help-text">Extensiones permitidas: pdf, jpg, jpeg, png, doc, docx. Máximo 5 MB por archivo.</small>
                     </div>
                 </div>
@@ -646,7 +647,7 @@ $institucion = array(
     <!-- Footer -->
     <div class="reclamaciones-footer">
         <p>© 2026 <?php echo $institucion['razon_social']; ?>. Todos los derechos son reservados.</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">
+        <p class="footer-links">
             <a href="consultar_reclamacion.php">Consultar Reclamación</a> | 
             <a href="mi_perfil.php">Mi Perfil</a> | 
             <a href="admin/login.php">Acceso Administrativo</a> |
@@ -654,10 +655,9 @@ $institucion = array(
         </p>
     </div>
 
-<script>
-    window.departamentoAreas = <?php echo json_encode(getAreasPorDepartamento()); ?>;
-</script>
+<script type="application/json" id="departamento-areas-data"><?php echo json_encode(getAreasPorDepartamento()); ?></script>
 <script src="js/script.js"></script>
+<script src="js/index-page.js"></script>
 
 </body>
 </html>

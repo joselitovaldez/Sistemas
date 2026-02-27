@@ -1,0 +1,52 @@
+/* Confirmacion (estilos extraidos de inline) */
+
+.confirmation-folio-label {
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+}
+
+.confirmation-folio-box {
+    cursor: pointer;
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: 4px;
+    margin: 1rem 0;
+    border: 2px dashed var(--primary);
+}
+
+.confirmation-hint {
+    margin: 1.5rem 0;
+}
+
+.confirmation-divider {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #dddddd;
+}
+
+.confirmation-section-title {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.confirmation-subtitle {
+    color: var(--primary);
+    margin: 0 0 0.75rem;
+}
+
+.confirmation-tip {
+    background: #fef5e7;
+    padding: 1rem;
+    border-left: 4px solid var(--secondary);
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.confirmation-actions {
+    margin-top: 2rem;
+}
+
+.btn-inline {
+    display: inline-block;
+    margin-right: 1rem;
+}

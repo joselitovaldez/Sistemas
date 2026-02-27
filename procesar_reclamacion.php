@@ -27,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'tipo_registro' => sanitizar($_POST['tipo_registro'] ?? ''),
         'detalle_reclamacion' => sanitizar($_POST['detalle_reclamacion'] ?? ''),
         'pedido' => sanitizar($_POST['pedido'] ?? ''),
-        'archivo_adjunto' => NULL
+        'archivo_adjunto' => NULL,
+        'archivo_adjunto_nombre' => NULL
     );
     
     // Validar campos requeridos
@@ -60,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
         $datos['archivo_adjunto'] = $resultado_archivo['archivo'];
+        $datos['archivo_adjunto_nombre'] = $resultado_archivo['nombre_original'] ?? NULL;
     }
     
     // Guardar reclamación

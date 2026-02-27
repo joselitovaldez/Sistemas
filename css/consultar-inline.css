@@ -1,0 +1,107 @@
+/* Consultar Reclamacion (estilos extraidos de inline) */
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-actions {
+    text-align: right;
+}
+
+.header-link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.header-link-spaced {
+    margin-right: 1rem;
+}
+
+.alert-spaced {
+    margin-bottom: 1.5rem;
+}
+
+.search-hint {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.status-label {
+    margin: 0.5rem 0 0;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.folio-clickable {
+    cursor: pointer;
+}
+
+.copy-hint {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.result-info-box {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.result-info-label {
+    margin: 0;
+    color: #666666;
+}
+
+.result-info-date {
+    margin: 0.5rem 0 0;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.result-info-time {
+    margin: 0.5rem 0 0;
+    color: #999999;
+    font-size: 0.85rem;
+}
+
+.btn-spaced {
+    margin-top: 1rem;
+}
+
+.btn-spaced-sm {
+    margin-top: 0.5rem;
+}
+
+.detail-block {
+    padding: 0.75rem 0;
+}
+
+.detail-block-divider {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-block-title {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.detail-block-text {
+    margin: 0;
+    color: #666666;
+}
+
+.response-date {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #155724;
+}
+
+.footer-links {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}

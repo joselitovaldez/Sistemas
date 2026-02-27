@@ -1,0 +1,29 @@
+/* Admin - Usuarios (estilos extraidos de inline) */
+
+.main-content-full {
+    margin-left: 0;
+}
+
+.top-header-flat {
+    border-radius: 0;
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.page-title-spaced {
+    margin-left: 1rem;
+}
+
+.form-spaced {
+    margin-bottom: 1.5rem;
+}
+
+.form-actions {
+    margin-top: 1rem;
+}
+
+.table-empty {
+    text-align: center;
+}
