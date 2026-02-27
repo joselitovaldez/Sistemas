@@ -1593,30 +1593,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
+            const isDark = !document.body.classList.contains('dark-mode');
             
-            // Update icon
-            if (darkModeIcon) {
-                if (isDark) {
-                    darkModeIcon.classList.remove('fa-moon');
-                    darkModeIcon.classList.add('fa-sun');
-                } else {
-                    darkModeIcon.classList.remove('fa-sun');
-                    darkModeIcon.classList.add('fa-moon');
-                }
-            }
-            
-            // Save preference and sync with theme customizer
-            localStorage.setItem('darkMode', isDark);
+            // Apply theme style properly (this handles sidebar and header colors)
+            const themeStyle = isDark ? 'dark' : 'light';
+            applyThemeStyle(themeStyle);
+            saveTheme({ style: themeStyle });
             
             // Update theme customizer radio button
-            const themeStyle = isDark ? 'dark' : 'light';
             const styleRadio = document.querySelector(`input[name="theme-style"][value="${themeStyle}"]`);
             if (styleRadio) styleRadio.checked = true;
-            
-            // Save to theme
-            saveTheme({ style: themeStyle });
         });
     }
     
@@ -1702,33 +1688,31 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarColor: 'linear-gradient(135deg, #10506e 0%, #0f6c91 100%)'
     };
     
-    // Load saved theme or use defaults
-    function loadTheme() {
-        const savedTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
-        
-        // Apply theme style
-        applyThemeStyle(savedTheme.style);
-        
-        // Apply header color
-        if (savedTheme.headerColor) {
-            applyHeaderColor(savedTheme.headerColor);
-        }
-        
-        // Apply sidebar color
-        if (savedTheme.sidebarColor) {
-            applySidebarColor(savedTheme.sidebarColor);
-        }
-        
-        // Update UI selections
-        const styleRadio = document.querySelector(`input[name="theme-style"][value="${savedTheme.style}"]`);
-        if (styleRadio) styleRadio.checked = true;
-    }
-    
     // Save theme to localStorage
     function saveTheme(theme) {
         const currentTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
         const updatedTheme = { ...currentTheme, ...theme };
         localStorage.setItem('dashboardTheme', JSON.stringify(updatedTheme));
+    }
+    
+    // Check if color is dark (simple brightness calculation)
+    function isColorDark(color) {
+        // For gradients, default to light text
+        if (color.includes('gradient') || color.includes('linear')) {
+            return true;
+        }
+        
+        // For hex colors
+        if (color.startsWith('#')) {
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness < 128;
+        }
+        
+        return false;
     }
     
     // Apply theme style (light, dark, semi-dark)
@@ -1840,24 +1824,26 @@ document.addEventListener('DOMContentLoaded', () => {
         saveTheme({ sidebarColor: color });
     }
     
-    // Check if color is dark (simple brightness calculation)
-    function isColorDark(color) {
-        // For gradients, default to light text
-        if (color.includes('gradient') || color.includes('linear')) {
-            return true;
+    // Load saved theme or use defaults
+    function loadTheme() {
+        const savedTheme = JSON.parse(localStorage.getItem('dashboardTheme')) || defaultTheme;
+        
+        // Apply theme style
+        applyThemeStyle(savedTheme.style);
+        
+        // Apply header color
+        if (savedTheme.headerColor) {
+            applyHeaderColor(savedTheme.headerColor);
         }
         
-        // For hex colors
-        if (color.startsWith('#')) {
-            const hex = color.replace('#', '');
-            const r = parseInt(hex.substr(0, 2), 16);
-            const g = parseInt(hex.substr(2, 2), 16);
-            const b = parseInt(hex.substr(4, 2), 16);
-            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-            return brightness < 128;
+        // Apply sidebar color
+        if (savedTheme.sidebarColor) {
+            applySidebarColor(savedTheme.sidebarColor);
         }
         
-        return false;
+        // Update UI selections
+        const styleRadio = document.querySelector(`input[name="theme-style"][value="${savedTheme.style}"]`);
+        if (styleRadio) styleRadio.checked = true;
     }
     
     // Toggle customizer panel
