@@ -212,15 +212,15 @@
     color: #555;
     flex: 1;
     overflow-y: auto;
-    padding: 1rem 3rem;
+    padding: 1rem 1rem;
 }
 
 /* Wrapper de contenido con fondo */
 .modal-content-wrapper {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
     background: #f6f7fb;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 16px;
 }
 
@@ -287,13 +287,44 @@
 .modal-estado-text {
     font-weight: 700;
     font-size: 1rem;
-    color: #3e85cc;
     text-transform: uppercase;
+}
+
+.modal-estado-badge.estado-resuelto {
+    background: #28a745 !important;
+}
+
+.modal-estado-badge.estado-resuelto .modal-estado-text {
+    color: #ffffff !important;
+}
+
+.modal-estado-badge.estado-revision {
+    background: #ffbf00 !important;
+}
+
+.modal-estado-badge.estado-revision .modal-estado-text {
+    color: #4a2f00 !important;
+}
+
+.modal-estado-badge.estado-no-procede {
+    background: #dc3545 !important;
+}
+
+.modal-estado-badge.estado-no-procede .modal-estado-text {
+    color: #ffffff !important;
+}
+
+.modal-estado-badge.estado-pendiente {
+    background: #c0c0c0 !important;
+}
+
+.modal-estado-badge.estado-pendiente .modal-estado-text {
+    color: #333333 !important;
 }
 
 /* Section Headers */
 .modal-section-header {
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.5rem 1rem;
     color: #17a2b8;
     font-size: 1.1rem;
     font-weight: 700;
@@ -522,7 +553,7 @@
 }
 
 .modal-btn-primary {
-    background: #667eea;
+    background: #448fc9;
     color: white;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }

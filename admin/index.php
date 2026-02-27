@@ -11,12 +11,52 @@ if (!isset($_SESSION['usuario'])) {
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-// Obtener información del usuario actual y sus áreas (si es asistente o supervisor)
-$sql_usuario_actual = "SELECT id, rol FROM usuarios WHERE usuario = ?";
+// Obtener información del usuario actual y actualizar la sesión si es necesario
+$sql_usuario_actual = "SELECT id, rol, nombre, apellido_paterno, apellido_materno, dni, email, telefono, foto FROM usuarios WHERE usuario = ?";
 $stmt_usuario = $conn->prepare($sql_usuario_actual);
 $stmt_usuario->bind_param("s", $_SESSION['usuario']);
 $stmt_usuario->execute();
 $usuario_actual = $stmt_usuario->get_result()->fetch_assoc();
+
+// Actualizar datos de sesión si no existen o están vacíos
+if ($usuario_actual) {
+    if (!isset($_SESSION['nombre']) || $_SESSION['nombre'] === '') {
+        $_SESSION['nombre'] = $usuario_actual['nombre'] ?? '';
+    }
+    if (!isset($_SESSION['apellido_paterno']) || $_SESSION['apellido_paterno'] === '') {
+        $_SESSION['apellido_paterno'] = $usuario_actual['apellido_paterno'] ?? '';
+    }
+    if (!isset($_SESSION['apellido_materno']) || $_SESSION['apellido_materno'] === '') {
+        $_SESSION['apellido_materno'] = $usuario_actual['apellido_materno'] ?? '';
+    }
+    if (!isset($_SESSION['dni']) || $_SESSION['dni'] === '') {
+        $_SESSION['dni'] = $usuario_actual['dni'] ?? '';
+    }
+    if (!isset($_SESSION['email']) || $_SESSION['email'] === '') {
+        $_SESSION['email'] = $usuario_actual['email'] ?? '';
+    }
+    if (!isset($_SESSION['telefono']) || $_SESSION['telefono'] === '') {
+        $_SESSION['telefono'] = $usuario_actual['telefono'] ?? '';
+    }
+    if (!isset($_SESSION['foto']) || $_SESSION['foto'] === '') {
+        $_SESSION['foto'] = $usuario_actual['foto'] ?? '';
+    }
+}
+
+// Normalizar ruta de la foto para uso en admin
+$foto_perfil = $_SESSION['foto'] ?? '';
+if (!empty($foto_perfil)) {
+    $foto_lower = strtolower($foto_perfil);
+    if (strpos($foto_lower, 'http://') === 0 || strpos($foto_lower, 'https://') === 0 || strpos($foto_lower, '/') === 0) {
+        // Mantener ruta absoluta o URL
+    } elseif (strpos($foto_lower, '../') === 0) {
+        // Mantener ruta relativa ya ajustada
+    } elseif (strpos($foto_lower, 'uploads/') === 0) {
+        $foto_perfil = '../' . $foto_perfil;
+    } else {
+        $foto_perfil = '../uploads/perfiles/' . $foto_perfil;
+    }
+}
 
 // Sin filtros por rol
 $where_areas = "";
@@ -461,6 +501,7 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Tipo</th>
+                                <th>Área</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -477,6 +518,13 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                                 <td><?php echo $row['email']; ?></td>
                                 <td>
                                     <span class="badge badge-type"><?php echo $row['tipo_registro']; ?></span>
+                                </td>
+                                <td>
+                                    <?php if (!empty($row['area'])): ?>
+                                        <span class="badge badge-area"><?php echo htmlspecialchars($row['area']); ?></span>
+                                    <?php else: ?>
+                                        <span class="text-muted">Sin asignar</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <span class="badge badge-status badge-<?php 
@@ -523,8 +571,8 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                     <!-- Foto de Perfil -->
                     <div class="perfil-foto-section">
                         <div class="perfil-foto">
-                            <?php if (!empty($_SESSION['foto'])): ?>
-                                <img src="<?php echo $_SESSION['foto']; ?>" alt="Foto de perfil" class="perfil-img">
+                            <?php if (!empty($foto_perfil)): ?>
+                                <img src="<?php echo htmlspecialchars($foto_perfil, ENT_QUOTES, 'UTF-8'); ?>" alt="Foto de perfil" class="perfil-img">
                             <?php else: ?>
                                 <div class="perfil-avatar-placeholder">
                                     <i class="fas fa-user"></i>
@@ -534,20 +582,27 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                         <h3 class="perfil-nombre">
                             <?php echo $_SESSION['nombre'] . ' ' . ($_SESSION['apellido_paterno'] ?? '') . ' ' . ($_SESSION['apellido_materno'] ?? ''); ?>
                         </h3>
-                        <p class="perfil-rol">
-                            <?php
-                            $rol_labels_perfil = [
-                                'superadmin' => 'Superadmin',
-                                'asistente_admin' => 'Asistente Admin',
-                                'decano_upg' => 'Decano/ UPG',
-                                'director_escuela_upg' => 'Director de Escuela / UPG',
-                                'director_area' => 'Director de Area',
-                                'asistente' => 'Asistente',
-                                'auditor' => 'Auditor'
-                            ];
-                            echo $rol_labels_perfil[$_SESSION['rol']] ?? ucfirst($_SESSION['rol']);
-                            ?>
-                        </p>
+                        <?php
+                        $areas_texto = '';
+                        if (!empty($areas_usuario)) {
+                            $lista_areas = [];
+                            foreach ($areas_usuario as $area_item) {
+                                $texto_area = '<div class="perfil-area-item">';
+                                $texto_area .= '<span class="perfil-area-depto">' . htmlspecialchars($area_item['departamento'], ENT_QUOTES, 'UTF-8') . '</span>';
+                                if ($area_item['area'] !== '*') {
+                                    $texto_area .= '<span class="perfil-area-sub">' . htmlspecialchars($area_item['area'], ENT_QUOTES, 'UTF-8') . '</span>';
+                                }
+                                $texto_area .= '</div>';
+                                $lista_areas[] = $texto_area;
+                            }
+                            $areas_texto = implode('', $lista_areas);
+                        }
+                        ?>
+                        <?php if ($areas_texto !== ''): ?>
+                            <p class="perfil-area">
+                                <?php echo $areas_texto; ?>
+                            </p>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Información del Perfil -->
@@ -559,7 +614,7 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                         <div class="perfil-info-grid">
                             <div class="perfil-info-item">
                                 <label class="perfil-label">
-                                    <i class="fas fa-user"></i> Nombre Completo
+                                    <i class="fas fa-user"></i> Nombres Completos
                                 </label>
                                 <p class="perfil-value">
                                     <?php echo $_SESSION['nombre'] . ' ' . ($_SESSION['apellido_paterno'] ?? '') . ' ' . ($_SESSION['apellido_materno'] ?? ''); ?>
@@ -611,32 +666,13 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                                 </p>
                             </div>
 
-                            <?php if (!empty($areas_usuario)): ?>
-                            <div class="perfil-info-item perfil-info-full">
-                                <label class="perfil-label">
-                                    <i class="fas fa-building"></i> Áreas Asignadas
-                                </label>
-                                <div class="perfil-areas">
-                                    <?php foreach ($areas_usuario as $area): ?>
-                                        <span class="perfil-area-tag">
-                                            <?php 
-                                            echo $area['departamento'];
-                                            if ($area['area'] !== '*') {
-                                                echo ' - ' . $area['area'];
-                                            }
-                                            ?>
-                                        </span>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                            <?php endif; ?>
                         </div>
 
                         <div class="perfil-actions">
-                            <button type="button" class="btn btn-primary" data-action="alert" data-message="Función de edición en desarrollo" data-type="info">
+                            <button type="button" class="btn btn-primary" data-action="open-perfil-modal">
                                 <i class="fas fa-edit"></i> Editar Perfil
                             </button>
-                            <button type="button" class="btn btn-warning" data-action="alert" data-message="Función de cambio de contraseña en desarrollo" data-type="info">
+                            <button type="button" class="btn btn-warning" data-action="open-password-modal" data-user-id="<?php echo (int)$_SESSION['id']; ?>" data-user-name="<?php echo htmlspecialchars($_SESSION['nombre'] . ' ' . ($_SESSION['apellido_paterno'] ?? '') . ' ' . ($_SESSION['apellido_materno'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                 <i class="fas fa-key"></i> Cambiar Contraseña
                             </button>
                         </div>
@@ -1109,6 +1145,84 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
                         </button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Actualizar Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Perfil -->
+    <div id="modalEditarPerfil" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header-gradient">
+                <h2>
+                    <i class="fas fa-user-edit"></i>
+                    Editar Perfil
+                </h2>
+                <button type="button" class="modal-close-btn" data-action="close-perfil-modal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="formEditarPerfil" class="dashboard-form" enctype="multipart/form-data">
+                    <div class="perfil-foto-preview">
+                        <div class="perfil-foto-preview-img">
+                            <?php if (!empty($foto_perfil)): ?>
+                                <img src="<?php echo htmlspecialchars($foto_perfil, ENT_QUOTES, 'UTF-8'); ?>" alt="Foto de perfil" id="perfil_foto_preview">
+                            <?php else: ?>
+                                <div class="perfil-foto-placeholder" id="perfil_foto_placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <img src="" alt="Foto de perfil" id="perfil_foto_preview" style="display: none;">
+                            <?php endif; ?>
+                            <button type="button" class="perfil-foto-preview-edit" data-action="open-perfil-foto" aria-label="Cambiar foto de perfil">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="perfil-info-heading">
+                            Informacion personal
+                        </div>
+                        <input type="file" id="perfil_foto" name="foto" class="perfil-foto-input" accept="image/jpeg,image/png,image/gif">
+                    </div>
+                    <div class="perfil-form-grid">
+                        <div class="form-group">
+                            <label for="perfil_nombre">Nombre</label>
+                            <input type="text" id="perfil_nombre" name="nombre" value="<?php echo htmlspecialchars($_SESSION['nombre'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_apellido_paterno">Apellido Paterno</label>
+                            <input type="text" id="perfil_apellido_paterno" name="apellido_paterno" value="<?php echo htmlspecialchars($_SESSION['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_apellido_materno">Apellido Materno</label>
+                            <input type="text" id="perfil_apellido_materno" name="apellido_materno" value="<?php echo htmlspecialchars($_SESSION['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_dni">DNI</label>
+                            <input type="text" id="perfil_dni" name="dni" maxlength="8" value="<?php echo htmlspecialchars($_SESSION['dni'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_telefono">Teléfono</label>
+                            <input type="text" id="perfil_telefono" name="telefono" maxlength="9" value="<?php echo htmlspecialchars($_SESSION['telefono'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_email">Correo Electrónico</label>
+                            <input type="email" id="perfil_email" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_usuario">Usuario</label>
+                            <input type="text" id="perfil_usuario" value="<?php echo htmlspecialchars($_SESSION['usuario'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil_rol">Rol</label>
+                            <input type="text" id="perfil_rol" value="<?php echo htmlspecialchars($rol_labels_perfil[$_SESSION['rol']] ?? ucfirst($_SESSION['rol']), ENT_QUOTES, 'UTF-8'); ?>" disabled>
+                        </div>
+                    </div>
+                    <div class="user-modal-actions">
+                        <button type="button" class="btn btn-secondary" data-action="close-perfil-modal">
+                            <i class="fa-regular fa-circle-xmark"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Cambios
                         </button>
                     </div>
                 </form>

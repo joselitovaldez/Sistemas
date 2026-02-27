@@ -71,8 +71,8 @@ try {
             // Dirección de Misión
             ['Dirección de Misión', 'Dirección de Misión'],
             
-            // DEC
-            ['DEC', 'DEC'],
+            // IDEC
+            ['IDEC', 'IDEC'],
             
             // Educación a Distancia UPeU
             ['Educación a Distancia UPeU', 'Educación a Distancia UPeU'],
@@ -163,7 +163,7 @@ try {
             ['Facultad de Ingeniería y Arquitectura', 'EP Arquitectura'],
             ['Facultad de Ingeniería y Arquitectura', 'EP Ingeniería Ambiental'],
             ['Facultad de Ingeniería y Arquitectura', 'EP Ingeniería Civil'],
-            ['Facultad de Ingeniería y Arquitectura', 'EP Ingeniería de Alimentos'],
+            ['Facultad de Ingeniería y Arquitectura', 'EP Ingeniería de Industrias Alimentarias'],
             ['Facultad de Ingeniería y Arquitectura', 'EP Ingeniería de Sistemas'],
             ['Facultad de Ingeniería y Arquitectura', 'Facultad de Ingeniería y Arquitectura'],
             

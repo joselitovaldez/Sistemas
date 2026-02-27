@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuario === '' || $password === '') {
         $error = 'Completa usuario y contraseña';
     } else {
-        $stmt = $conn->prepare('SELECT id, usuario, password, rol, estado FROM usuarios WHERE usuario = ? LIMIT 1');
+        $stmt = $conn->prepare('SELECT id, usuario, password, rol, estado, nombre, apellido_paterno, apellido_materno, dni, email, telefono, foto FROM usuarios WHERE usuario = ? LIMIT 1');
         $stmt->bind_param('s', $usuario);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -35,6 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['id'] = (int)$user['id'];
                 $_SESSION['usuario'] = $user['usuario'];
                 $_SESSION['rol'] = $user['rol'];
+                $_SESSION['nombre'] = $user['nombre'] ?? '';
+                $_SESSION['apellido_paterno'] = $user['apellido_paterno'] ?? '';
+                $_SESSION['apellido_materno'] = $user['apellido_materno'] ?? '';
+                $_SESSION['dni'] = $user['dni'] ?? '';
+                $_SESSION['email'] = $user['email'] ?? '';
+                $_SESSION['telefono'] = $user['telefono'] ?? '';
+                $_SESSION['foto'] = $user['foto'] ?? '';
                 header('Location: index.php');
                 exit();
             }

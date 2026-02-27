@@ -18,8 +18,10 @@ try {
     }
 
     $password_hash = password_hash($nueva_password, PASSWORD_BCRYPT);
-    $stmt = $pdo->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
-    $stmt->execute([$password_hash, $usuario_id]);
+    $usuario_id = (int)$usuario_id;
+    $stmt = $conn->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
+    $stmt->bind_param('si', $password_hash, $usuario_id);
+    $stmt->execute();
 
     echo json_encode(['success' => true, 'message' => 'Contraseña actualizada']);
 } catch (Exception $e) {

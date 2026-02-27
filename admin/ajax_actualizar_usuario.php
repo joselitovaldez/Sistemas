@@ -47,6 +47,16 @@ try {
     $stmt->bind_param('sssssssi', $nombre, $apellido_paterno, $apellido_materno, $dni, $telefono, $email, $rol, $usuario_id);
 
     if ($stmt->execute()) {
+        // Si el usuario está editando su propio perfil, actualizar la sesión
+        if (isset($_SESSION['id']) && $_SESSION['id'] == $usuario_id) {
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['apellido_paterno'] = $apellido_paterno;
+            $_SESSION['apellido_materno'] = $apellido_materno;
+            $_SESSION['telefono'] = $telefono;
+            $_SESSION['email'] = $email;
+            $_SESSION['rol'] = $rol;
+        }
+        
         echo json_encode(['success' => true, 'message' => 'Usuario actualizado correctamente']);
     } else {
         echo json_encode(['success' => false, 'message' => 'No se pudo actualizar el usuario']);

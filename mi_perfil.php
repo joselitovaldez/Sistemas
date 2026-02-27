@@ -19,7 +19,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
         
         // Crear directorio si no existe
         if (!is_dir($directorio)) {
-            <script src="js/mi-perfil.js"></script>
+            mkdir($directorio, 0755, true);
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Sistema de Reclamaciones</title>
+    <link rel="stylesheet" href="css/mi-perfil.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mi-perfil-inline.css">
+    <link rel="stylesheet" href="css/admin-dashboard.css>
+</head>
+<body>
+<div class="page-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <script src="js/mi-perfil.js"></script>
             <div class="profile-photo">
                 <?php if ($foto): ?>
                     <img src="uploads/perfiles/<?php echo $foto; ?>" alt="Foto de perfil">

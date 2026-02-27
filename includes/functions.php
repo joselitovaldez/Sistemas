@@ -293,7 +293,7 @@ function getAreasPorDepartamento() {
             'EP Arquitectura',
             'EP Ingeniería Ambiental',
             'EP Ingeniería Civil',
-            'EP Ingeniería de Alimentos',
+            'EP Ingeniería de Industrias Alimentarias',
             'EP Ingeniería de Sistemas',
             'Facultad de Ingeniería y Arquitectura'
         ),

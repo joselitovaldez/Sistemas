@@ -226,11 +226,7 @@ $institucion = array(
 <footer>
     <p>Copyright © UPeU 2026. Todos los derechos son reservados — 
     <a href="https://www.upeu.edu.pe/">Universidad Peruana Unión</a></p>
-    <p class="footer-links">
-        <a href="index.php">Nueva Reclamación</a> | 
-        <a href="mi_perfil.php">Mi Perfil</a> | 
-        <a href="admin/login.php">Acceso Administrativo</a>
-    </p>
+    
 </footer>
 
 <script src="js/script.js"></script>

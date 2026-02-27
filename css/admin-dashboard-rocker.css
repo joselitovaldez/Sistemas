@@ -37,7 +37,7 @@ body.rocker-dashboard {
     top: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background: linear-gradient(180deg, #1e3a5f 0%, #0f2433 100%);
+    background: linear-gradient(135deg, #10506e 0%, #0f6c91 100%);
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
     transition: var(--transition);
     z-index: 1000;
@@ -579,6 +579,19 @@ body.rocker-dashboard {
 .badge-type {
     background: rgba(108,117,125,0.1);
     color: var(--secondary);
+}
+
+.badge-area {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
 .badge-status {

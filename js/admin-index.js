@@ -47,16 +47,21 @@ function showSection(sectionName) {
 }
 
 function getEstadoClass(estado) {
-    if (estado === 'Resuelto') return 'estado-resuelto';
-    if (estado === 'En revision' || estado === 'En Revisión') return 'estado-revision';
-    if (estado === 'No procede') return 'estado-no-procede';
+    if (!estado) return 'estado-pendiente';
+    const estadoNormalizado = estado.toLowerCase().trim();
+    if (estadoNormalizado === 'resuelto') return 'estado-resuelto';
+    if (estadoNormalizado === 'en revision' || estadoNormalizado === 'en revisión') return 'estado-revision';
+    if (estadoNormalizado === 'no procede') return 'estado-no-procede';
+    if (estadoNormalizado === 'pendiente') return 'estado-pendiente';
     return 'estado-pendiente';
 }
 
 function getEstadoIcon(estado) {
-    if (estado === 'Resuelto') return '✓';
-    if (estado === 'En revision' || estado === 'En Revisión') return '⏳';
-    if (estado === 'No procede') return '✗';
+    if (!estado) return '📋';
+    const estadoNormalizado = estado.toLowerCase().trim();
+    if (estadoNormalizado === 'resuelto') return '✓';
+    if (estadoNormalizado === 'en revision' || estadoNormalizado === 'en revisión') return '⏳';
+    if (estadoNormalizado === 'no procede') return '✗';
     return '📋';
 }
 
@@ -454,6 +459,21 @@ function derivarReclamoModal(id) {
 
             const r = data.reclamacion;
 
+            // Determinar clase de badge según estado
+            let estadoBadgeClass = 'badge-info';
+            if (r.estado) {
+                const estadoNormalizado = r.estado.toLowerCase().trim();
+                if (estadoNormalizado === 'resuelto') {
+                    estadoBadgeClass = 'badge-success';
+                } else if (estadoNormalizado === 'en revision' || estadoNormalizado === 'en revisión') {
+                    estadoBadgeClass = 'badge-warning';
+                } else if (estadoNormalizado === 'no procede') {
+                    estadoBadgeClass = 'badge-danger';
+                } else if (estadoNormalizado === 'pendiente') {
+                    estadoBadgeClass = 'badge-info';
+                }
+            }
+
             fetch('ajax_get_departamentos.php')
                 .then(response => response.json())
                 .then(deptData => {
@@ -463,7 +483,7 @@ function derivarReclamoModal(id) {
                             <p class="derivar-summary-line"><strong>Folio:</strong> ${r.folio || 'N/A'}</p>
                             <p class="derivar-summary-line"><strong>Tipo de Bien:</strong> ${r.tipo_bien || 'N/A'}</p>
                             <p class="derivar-summary-line"><strong>Tipo de Reclamo:</strong> ${r.tipo_registro || 'N/A'}</p>
-                            <p class="derivar-summary-line"><strong>Estado Actual:</strong> <span class="derivar-estado-badge">${r.estado}</span></p>
+                            <p class="derivar-summary-line"><strong>Estado Actual:</strong> <span class="derivar-estado-badge ${estadoBadgeClass}">${r.estado}</span></p>
                         </div>
 
                         <div class="derivar-form-group">
@@ -678,7 +698,7 @@ function derivarReclamo(id) {
     mostrarAlerta('Funcion aun en desarrollo', 'info');
 }
 
-function mostrarAlerta(mensaje, tipo = 'info') {
+function mostrarAlerta(mensaje, tipo = 'info', callback = null) {
     const overlay = document.getElementById('modalAlerta');
     const header = document.querySelector('.modal-alerta-header');
     const titulo = document.getElementById('modalAlertaTitulo');
@@ -688,6 +708,7 @@ function mostrarAlerta(mensaje, tipo = 'info') {
     if (!overlay || !header || !titulo || !contenido || !btn) {
         console.warn('Elementos del modal no encontrados');
         alert(mensaje);
+        if (callback) callback();
         return;
     }
 
@@ -734,27 +755,33 @@ function mostrarAlerta(mensaje, tipo = 'info') {
     titulo.textContent = config.title;
     contenido.textContent = mensaje;
 
+    // Actualizar clase del botón según el tipo
+    btn.className = '';
+    if (tipo === 'error') {
+        btn.className = 'btn-alerta-error';
+    } else if (tipo === 'warning') {
+        btn.className = 'btn-alerta-warning';
+    } else if (tipo === 'info') {
+        btn.className = 'btn-alerta-info';
+    }
+    // Si es success, no agrega clase (usa el estilo verde por defecto)
+
     // Mostrar modal
     overlay.classList.add('active');
 
-    // Auto cerrar después de 4 segundos si es success
-    if (tipo === 'success') {
-        setTimeout(() => {
-            overlay.classList.remove('active');
-        }, 4000);
-    }
-
-    // Listener para cerrar al hacer clic en botón
-    btn.onclick = function() {
+    // Función para cerrar el modal
+    const cerrarModal = function() {
         overlay.classList.remove('active');
+        // Ejecutar callback si existe
+        if (callback) {
+            callback();
+        }
+        // Limpiar el listener del botón
+        btn.onclick = null;
     };
 
-    // Listener para cerrar al hacer clic en overlay (fuera del modal)
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-            overlay.classList.remove('active');
-        }
-    });
+    // Listener para cerrar SOLO al hacer clic en el botón
+    btn.onclick = cerrarModal;
 }
 
 function togglePasswordByData(targetId, iconId) {
@@ -887,6 +914,46 @@ function cerrarModalEditar() {
     document.body.style.overflow = '';
 }
 
+function abrirModalPerfil() {
+    const modal = document.getElementById('modalEditarPerfil');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function cerrarModalPerfil() {
+    const modal = document.getElementById('modalEditarPerfil');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+async function guardarPerfil(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch('ajax_actualizar_perfil.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            cerrarModalPerfil();
+            mostrarAlerta('Perfil actualizado correctamente', 'success', function() {
+                window.location.reload();
+            });
+        } else {
+            mostrarAlerta(data.message || 'No se pudo actualizar el perfil', 'error');
+        }
+    } catch (error) {
+        mostrarAlerta('Error al actualizar perfil', 'error');
+    }
+}
+
 async function guardarEdicionUsuario(event) {
     event.preventDefault();
     const form = event.target;
@@ -899,8 +966,13 @@ async function guardarEdicionUsuario(event) {
         });
         const data = await response.json();
         if (data.success) {
-            mostrarAlerta('Usuario actualizado correctamente', 'success');
-            window.location.reload();
+            // Cerrar modal de edición primero
+            cerrarModalEditar();
+            
+            // Mostrar alerta de éxito con callback para recargar
+            mostrarAlerta('Usuario actualizado correctamente', 'success', function() {
+                window.location.reload();
+            });
         } else {
             mostrarAlerta(data.message || 'No se pudo actualizar el usuario', 'error');
         }
@@ -1333,6 +1405,23 @@ function handleAction(actionEl) {
         case 'close-editar-usuario':
             cerrarModalEditar();
             break;
+        case 'open-perfil-modal':
+            abrirModalPerfil();
+            break;
+        case 'open-password-modal': {
+            const userId = actionEl.dataset.userId;
+            const userName = actionEl.dataset.userName || '';
+            if (userId) cambiarPasswordUsuario(userId, userName);
+            break;
+        }
+        case 'open-perfil-foto': {
+            const fileInput = document.getElementById('perfil_foto');
+            if (fileInput) fileInput.click();
+            break;
+        }
+        case 'close-perfil-modal':
+            cerrarModalPerfil();
+            break;
         case 'close-detalle':
             cerrarModalDetalle();
             break;
@@ -1437,6 +1526,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formEditar = document.getElementById('formEditarUsuario');
     if (formEditar) formEditar.addEventListener('submit', guardarEdicionUsuario);
+
+    const formPerfil = document.getElementById('formEditarPerfil');
+    if (formPerfil) formPerfil.addEventListener('submit', guardarPerfil);
+
+    const fotoInput = document.getElementById('perfil_foto');
+    const fotoPreview = document.getElementById('perfil_foto_preview');
+    const fotoPlaceholder = document.getElementById('perfil_foto_placeholder');
+    if (fotoInput && fotoPreview) {
+        fotoInput.addEventListener('change', () => {
+            const file = fotoInput.files && fotoInput.files[0];
+            if (!file) return;
+
+            const url = URL.createObjectURL(file);
+            fotoPreview.onload = () => URL.revokeObjectURL(url);
+            fotoPreview.src = url;
+            fotoPreview.style.display = 'block';
+            if (fotoPlaceholder) fotoPlaceholder.style.display = 'none';
+        });
+    }
 
     initCharts();
     
