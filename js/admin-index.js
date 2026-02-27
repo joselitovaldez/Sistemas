@@ -1575,5 +1575,110 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    // Header Icons Functionality
+    
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = darkModeToggle ? darkModeToggle.querySelector('i') : null;
+    
+    // Check for saved dark mode preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        if (darkModeIcon) {
+            darkModeIcon.classList.remove('fa-moon');
+            darkModeIcon.classList.add('fa-sun');
+        }
+    }
+    
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            // Update icon
+            if (darkModeIcon) {
+                if (isDark) {
+                    darkModeIcon.classList.remove('fa-moon');
+                    darkModeIcon.classList.add('fa-sun');
+                } else {
+                    darkModeIcon.classList.remove('fa-sun');
+                    darkModeIcon.classList.add('fa-moon');
+                }
+            }
+            
+            // Save preference
+            localStorage.setItem('darkMode', isDark);
+        });
+    }
+    
+    // Notifications Dropdown Toggle
+    const notificationsToggle = document.getElementById('notificationsToggle');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    
+    if (notificationsToggle && notificationsDropdown) {
+        notificationsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationsDropdown.classList.toggle('show');
+            
+            // Close user menu if open
+            const userMenu = document.getElementById('userMenuDropdown');
+            if (userMenu && userMenu.classList.contains('show')) {
+                userMenu.classList.remove('show');
+            }
+        });
+    }
+    
+    // Language Toggle (placeholder for future implementation)
+    const languageToggle = document.getElementById('languageToggle');
+    if (languageToggle) {
+        languageToggle.addEventListener('click', () => {
+            // Placeholder for language switching functionality
+            console.log('Language toggle clicked - To be implemented');
+            // You can add a dropdown menu similar to notifications here
+        });
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (notificationsDropdown && !e.target.closest('.header-icon-wrapper')) {
+            notificationsDropdown.classList.remove('show');
+        }
+        
+        const userMenu = document.getElementById('userMenuDropdown');
+        if (userMenu && !e.target.closest('.user-menu-container')) {
+            userMenu.classList.remove('show');
+        }
+    });
+    
+    // Notification item click handler
+    document.querySelectorAll('.notification-item').forEach(item => {
+        item.addEventListener('click', function() {
+            // Mark as read
+            this.classList.remove('unread');
+            
+            // Update badge count
+            const badge = document.getElementById('notificationBadge');
+            if (badge) {
+                const currentCount = parseInt(badge.textContent);
+                if (currentCount > 0) {
+                    badge.textContent = currentCount - 1;
+                    
+                    // Hide badge if count is 0
+                    if (currentCount - 1 === 0) {
+                        badge.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Update notifications count in header
+            const notificationsCount = document.querySelector('.notifications-count');
+            if (notificationsCount) {
+                const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+                notificationsCount.textContent = unreadCount + ' nuevas';
+            }
+        });
+    });
+    
     // El modal solo se cierra con los botones de cerrar o cancelar
 });

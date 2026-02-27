@@ -248,6 +248,79 @@ $estados_result = $conn->query($sql_estados)->fetch_assoc();
             <h1 class="page-title" id="pageTitle">Dashboard</h1>
         </div>
         <div class="header-right">
+            <!-- Header Icons -->
+            <div class="header-icons">
+                <!-- Language Selector -->
+                <div class="header-icon-wrapper">
+                    <button class="header-icon-btn" id="languageToggle" title="Idioma">
+                        <span class="flag-icon">🇪🇸</span>
+                    </button>
+                </div>
+                
+                <!-- Dark Mode Toggle -->
+                <div class="header-icon-wrapper">
+                    <button class="header-icon-btn" id="darkModeToggle" title="Modo Oscuro">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                
+                <!-- Notifications -->
+                <div class="header-icon-wrapper">
+                    <button class="header-icon-btn" id="notificationsToggle" title="Notificaciones">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">7</span>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header">
+                            <h4>Notificaciones</h4>
+                            <span class="notifications-count">7 nuevas</span>
+                        </div>
+                        <div class="notifications-list">
+                            <div class="notification-item unread">
+                                <div class="notification-icon success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Reclamo #1234 fue resuelto</p>
+                                    <span class="notification-time">Hace 5 minutos</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon info">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Nuevo reclamo asignado a tu área</p>
+                                    <span class="notification-time">Hace 15 minutos</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Reclamo #1230 requiere revisión urgente</p>
+                                    <span class="notification-time">Hace 1 hora</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon primary">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Nuevo usuario registrado en el sistema</p>
+                                    <span class="notification-time">Hace 2 horas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notifications-footer">
+                            <a href="#" class="view-all-notifications">Ver todas las notificaciones</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- User Menu Dropdown -->
             <div class="user-menu-container">
                 <button class="user-menu-toggle user-menu-toggle-btn" data-action="toggle-user-menu">
