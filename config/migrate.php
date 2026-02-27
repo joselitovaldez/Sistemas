@@ -16,7 +16,7 @@ echo "<hr>";
 
 // 1. Actualizar ENUM de roles
 echo "1. Actualizando roles...<br>";
-$sql_roles = "ALTER TABLE usuarios MODIFY rol ENUM('superadmin', 'admin', 'supervisor', 'asistente') DEFAULT 'asistente'";
+$sql_roles = "ALTER TABLE usuarios MODIFY rol ENUM('superadmin', 'asistente_admin', 'decano_upg', 'director_escuela_upg', 'director_area', 'asistente', 'auditor') DEFAULT 'asistente'";
 if ($conn->query($sql_roles) === TRUE) {
     echo "✓ Roles actualizados correctamente<br>";
 } else {

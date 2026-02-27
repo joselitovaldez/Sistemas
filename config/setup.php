@@ -49,6 +49,7 @@ $tabla_reclamaciones = "CREATE TABLE IF NOT EXISTS reclamaciones (
     detalle_reclamacion TEXT NOT NULL,
     pedido TEXT,
     archivo_adjunto VARCHAR(255),
+    archivo_adjunto_nombre VARCHAR(255),
     
     -- Estado
     estado ENUM('Pendiente', 'En revisión', 'Resuelto', 'No procede') DEFAULT 'Pendiente',
@@ -79,7 +80,7 @@ $tabla_usuarios = "CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(100) NOT NULL,
     telefono VARCHAR(9) NULL,
     foto VARCHAR(255) NULL,
-    rol ENUM('superadmin', 'admin', 'supervisor', 'asistente', 'decanatura', 'direccion', 'analista') DEFAULT 'asistente',
+    rol ENUM('superadmin', 'asistente_admin', 'decano_upg', 'director_escuela_upg', 'director_area', 'asistente', 'auditor') DEFAULT 'asistente',
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX(usuario),
@@ -122,7 +123,7 @@ if ($conn->query($tabla_areas) === TRUE) {
 }
 
 // Actualizar roles existentes si es necesario
-$actualizar_roles = "ALTER TABLE usuarios MODIFY rol ENUM('superadmin', 'admin', 'supervisor', 'asistente') DEFAULT 'asistente'";
+$actualizar_roles = "ALTER TABLE usuarios MODIFY rol ENUM('superadmin', 'asistente_admin', 'decano_upg', 'director_escuela_upg', 'director_area', 'asistente', 'auditor') DEFAULT 'asistente'";
 $conn->query($actualizar_roles); // Ejecutar sin validación para evitar errores si ya está actualizado
 
 // Agregar campo de asignación en reclamaciones

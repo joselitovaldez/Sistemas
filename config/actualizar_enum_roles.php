@@ -24,12 +24,12 @@ while ($row = $result->fetch_assoc()) {
 $sql_alter = "ALTER TABLE usuarios 
               MODIFY COLUMN rol ENUM(
                   'superadmin',
-                  'admin',
-                  'analista',
-                  'supervisor',
-                  'direccion',
-                  'decanatura',
-                  'asistente'
+                  'asistente_admin',
+                  'decano_upg',
+                  'director_escuela_upg',
+                  'director_area',
+                  'asistente',
+                  'auditor'
               ) NULL DEFAULT 'asistente'";
 
 echo "Ejecutando ALTER TABLE...\n";
@@ -49,12 +49,12 @@ if ($conn->query($sql_alter)) {
     
     echo "✓ Ahora puedes asignar los siguientes roles:\n";
     echo "  - superadmin\n";
-    echo "  - admin\n";
-    echo "  - analista (NUEVO)\n";
-    echo "  - supervisor\n";
-    echo "  - direccion (NUEVO)\n";
-    echo "  - decanatura (NUEVO)\n";
+    echo "  - asistente_admin\n";
+    echo "  - decano_upg\n";
+    echo "  - director_escuela_upg\n";
+    echo "  - director_area\n";
     echo "  - asistente\n";
+    echo "  - auditor\n";
 } else {
     echo "✗ Error al actualizar: " . $conn->error . "\n";
 }
