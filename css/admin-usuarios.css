@@ -287,10 +287,6 @@
     gap: 1.2rem;
 }
 
-.perfil-form-grid .perfil-form-full {
-    grid-column: span 3;
-}
-
 /* Modal editar perfil */
 #modalEditarPerfil .modal-container {
     max-width: 900px;
@@ -484,14 +480,6 @@
     background-color: #2563a0;
 }
 
-.user-modal-actions .btn-cancel {
-    background: #6c757d;
-    color: #ffffff;
-}
-
-.user-modal-actions .btn-cancel:hover {
-    background: #5a6268;
-}
 
 #modalCrearUsuario .modal-content {
     background: #ffffff;
@@ -528,42 +516,6 @@
     outline: none;
     border-color: #3e85cc;
     box-shadow: 0 0 0 3px rgba(62, 133, 204, 0.15);
-}
-/* Botones de Acciones en Tabla de Usuarios */
-
-.btn-activate {
-    background-color: #3e85cc;
-    color: #ffffff;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-right: 0.5rem;
-}
-
-.btn-activate:hover {
-    background-color: #2563a0;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(62, 133, 204, 0.3);
-}
-
-.btn-activate:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(62, 133, 204, 0.2);
-}
-
-.btn-activate.inactive {
-    background-color: #95a5a6;
-}
-
-.btn-activate.inactive:hover {
-    background-color: #7f8c8d;
 }
 
 .btn-delete {
@@ -649,14 +601,6 @@
     border-color: #dc3545;
     background-color: #fff5f5;
     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
-}
-
-.input-error-message {
-    margin-top: 0.4rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #dc3545;
-    min-height: 1rem;
 }
 
 .toggle-password {

@@ -150,11 +150,6 @@ function validarArchivo(input) {
     return true;
 }
 
-// Descargar archivo
-function descargarArchivo(nombreArchivo) {
-    window.location.href = 'descargar.php?archivo=' + encodeURIComponent(nombreArchivo);
-}
-
 // Copiar texto
 function copiarTexto(texto) {
     const temp = document.createElement('textarea');

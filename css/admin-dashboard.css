@@ -57,13 +57,6 @@ body .container {
     color: var(--info); 
 }
 
-/* Botones de acción con iconos */
-.btn-action-group {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-}
-
 .btn-action {
     display: inline-flex;
     align-items: center;

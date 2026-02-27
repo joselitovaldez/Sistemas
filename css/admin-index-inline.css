@@ -771,16 +771,6 @@
     margin-top: 0.5rem;
 }
 
-.perfil-rol {
-    margin: 0;
-    font-size: 1rem;
-    opacity: 0.9;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    margin-top: 0.5rem;
-}
-
 .perfil-info-section {
     background: white;
     border-radius: 12px;
@@ -810,10 +800,6 @@
     gap: 0.5rem;
 }
 
-.perfil-info-full {
-    grid-column: 1 / -1;
-}
-
 .perfil-label {
     font-weight: 600;
     color: #666;
@@ -831,21 +817,6 @@
     background: #f8f9fa;
     border-radius: 6px;
     border-left: 3px solid #099cd1;
-}
-
-.perfil-areas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.perfil-area-tag {
-    background: #667eea;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
 }
 
 .perfil-actions {

@@ -50,14 +50,6 @@ textarea:focus {
 }
 
 @media (max-width: 968px) {
-    .dashboard-container {
-        grid-template-columns: 1fr;
-    }
-
-    .profile-card {
-        position: static;
-    }
-
     .row-form {
         grid-template-columns: 1fr;
     }
@@ -253,12 +245,6 @@ textarea:focus {
 
 .header-actions {
     text-align: right;
-}
-
-.header-back-link {
-    color: #ffffff;
-    text-decoration: none;
-    margin-right: 2rem;
 }
 
 .profile-subtitle {
